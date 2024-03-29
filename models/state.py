@@ -12,22 +12,20 @@ storage_type = os.environ.get('HBNB_TYPE_STORAGE')
 
 class State(BaseModel, Base):
     """State class handles all application states"""
-    if storage_type == "db":
         __tablename__ = 'states'
+        if (os.getenv("HNBN_TYPE_STORAGE") == 'db'):
         name = Column(String(128), nullable=False)
-        cities = relationship('City', backref='state', cascade='delete')
+        cities = relationship('City', backref='state', cascade='all delete')
     else:
         name = ''
 
-    if storage_type != 'db':
         @property
         def cities(self):
             """
-            getter method, returns list of City objs from storage
-            linked to the current State
+            return list of cities
             """
-            city_list = []
-            for city in models.storage.all("City").values():
-                if city.state_id == self.id:
-                    city_list.append(city)
-            return city_list
+            my_list = []
+            for key, value in models.storage.all("City"):
+                if (value.state_id == self.id):
+                    my_list.append(value)
+            return (my_list)
