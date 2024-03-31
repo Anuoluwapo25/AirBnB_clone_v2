@@ -24,9 +24,9 @@ def states_lists():
     """
     dispaly HtMl PAGE
     """
-    states = storage.all(State).values()
-    sorted_state = sorted(states, key=lambda state: state.name)
-    return render_template("7-states_list.html", states=sorted_state)
+    states = storage.all(State)
+    sorted_state =  [states[key] for key in states]
+    return(render_template("7-states_list.html", states=sorted_state))
 
 
 
